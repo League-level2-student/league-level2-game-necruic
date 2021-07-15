@@ -16,17 +16,14 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
 	final int P1 = 1;
 	final int P2 = 2;
 	final int END = 3;
-	int currentState = P1;
+	int currentState = MENU;
 	Font titlefont = new Font("Arial", Font.PLAIN, 48);
+	Font smolFont = new Font("Arial", Font.PLAIN, 24);
 	char[][] grid;
 	public GamePanel() {
 		grid = new char[3][3];
-		for (int i = 0; i < grid.length; i++) {
-			for (int j = 0; j < grid[i].length; j++) {
-				grid[i][j]= ' ' ;
-				
-			}
-		}
+		
+		
 		
 	}
 	@Override
@@ -35,12 +32,31 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
 		g.setColor(Color.white);
 		g.fillRect(0, 0, Tic.WIDTH, Tic.LENGTH);
 		g.setColor(Color.black);
+		if (currentState == MENU) {
+			drawMenuState(g);
+		}
+		if (currentState == P1) {
+			for (int i = 0; i < grid.length; i++) {
+				for (int j = 0; j < grid[i].length; j++) {
+					grid[i][j]= ' ' ;
+					
+				}
+			}
+		}
 		for (int i =0; i < grid.length; i++) {
 			for (int j = 0; j < grid[i].length; j++) {
 				g.drawRect(j*Tic.WIDTH/3, i*Tic.LENGTH/3, Tic.WIDTH/3, Tic.LENGTH/3);
 				g.drawString(""+grid[j][i], j*Tic.WIDTH/3+75, i*Tic.LENGTH/3+150);
+				
 			}
 		}
+	}
+	public void drawMenuState(Graphics g) {
+		g.setColor(Color.black);
+		g.setFont(titlefont);
+		g.drawString("Tic Tac Toe", 100, 100);
+		g.setFont(smolFont);
+		g.drawString("Press Enter to start", 125, 300);
 	}
 	@Override
 	public void keyPressed(KeyEvent arg0) {
@@ -79,13 +95,30 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener {
 		// TODO Auto-generated method stub
 		int x =arg0.getX();
 		int y=arg0.getY();
-		System.out.println(grid[y/Tic.LENGTH][x/Tic.WIDTH]);
+	
+if (grid[x/(Tic.WIDTH/3)] [y/(Tic.LENGTH/3)]=='x' || grid[x/(Tic.WIDTH/3)][y/(Tic.LENGTH/3)]=='y') {
+			return;
+		}
 		if(currentState == P1) {
-			grid[y/Tic.LENGTH][x/Tic.WIDTH]='x';
+			grid[x/(Tic.WIDTH/3)] [y/(Tic.LENGTH/3)]='x';
+				currentState = P2;
 				
 			
 			
 		}
+		
+		else if (currentState == P2) {
+			grid[x/(Tic.WIDTH/3)][y/(Tic.LENGTH/3)]='y';
+			currentState = P1;
+		}
+		
+		if(grid[x/(Tic.WIDTH/3)][y/(Tic.LENGTH/3)] == ' ') {
+			currentState = END;
+		}
+		
+		System.out.println(x);
+		System.out.println(y);
+		repaint();
 		/*
 		else if(currentState == P2) {
 			for (int i = 0; i < grid.length; i++) {
