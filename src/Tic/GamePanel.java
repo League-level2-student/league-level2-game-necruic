@@ -24,6 +24,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 	Font smolFont = new Font("Arial", Font.PLAIN, 24);
 	char[][] grid;
 	Timer framedraw = new Timer(1000/60, this);
+	
 	public GamePanel() {
 		grid = new char[3][3];
 		framedraw.start();
@@ -60,10 +61,86 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 		
 	}
 	
+	
+		
+	   
+		
+	    int n = 3;
+	    int moveCount = 0;
+
+	    void Move(int x, int y, char s){
+	        if(grid[x][y] == ' '){
+	            grid[x][y] = s;
+	        }
+	        moveCount++;
+
+	        //check end conditions
+	        System.out.println(s + "move");
+	        //check col
+	        for(int i = 0; i < n; i++){
+	            if(grid[x][i] != s)
+	                break;
+	            if(i == n-1){
+	                //report win for s
+	            	System.out.println(s+"win");
+	            }
+	        }
+
+	        //check row
+	        for(int i = 0; i < n; i++){
+	            if(grid[i][y] != s)
+	                break;
+	            if(i == n-1){
+	                //report win for s
+	            	System.out.println(s+"win");
+	            }
+	        }
+
+	        //check diag
+	        if(x == y){
+	            //we're on a diagonal
+	            for(int i = 0; i < n; i++){
+	                if(grid[i][i] != s)
+	                    break;
+	                if(i == n-1){
+	                    //report win for s
+	                	System.out.println(s+"win");
+	                }
+	            }
+	        }
+
+	        //check anti diag (thanks rampion)
+	        if(x + y == n - 1){
+	            for(int i = 0; i < n; i++){
+	                if(grid[i][(n-1)-i] != s)
+	                    break;
+	                if(i == n-1){
+	                    //report win for s
+	                	System.out.println(s+"win");
+	                }
+	            }
+	        }
+
+	        //check draw
+	        if(moveCount == (Math.pow(n, 2) - 1)){
+	            //report draw
+	        	
+	        	System.out.println("draw");
+	        }
+	    }
+	
+	
 	public void drawMenuState(Graphics g) {
 		g.setColor(Color.black);
 		g.setFont(titlefont);
 		g.drawString("Tic Tac Toe", 100, 100);
+		g.setFont(smolFont);
+		g.drawString("Press Enter to start", 125, 300);
+	}
+	public void drawDrawState (Graphics g) {
+		g.setColor(Color.black);
+		g.setFont(titlefont);
+		g.drawString("It was a draw.", 100, 100);
 		g.setFont(smolFont);
 		g.drawString("Press Enter to start", 125, 300);
 	}
@@ -138,12 +215,14 @@ public void updateMenuState() {
 		// TODO Auto-generated method stub
 		int x =arg0.getX();
 		int y=arg0.getY();
-	
-if (grid[x/(Tic.WIDTH/3)] [y/(Tic.LENGTH/3)]=='x' || grid[x/(Tic.WIDTH/3)][y/(Tic.LENGTH/3)]=='y') {
+
+		int gridx = x/Tic.WIDTH/3;
+		int gridy = y/Tic.LENGTH/3;
+if (grid[gridx] [gridy]=='x' || grid[gridx][gridy]=='y') {
 			return;
 		}
 		if(currentState == P1) {
-			grid[x/(Tic.WIDTH/3)] [y/(Tic.LENGTH/3)]='x';
+			Move(gridx, gridy, 'x');
 				currentState = P2;
 				
 			
@@ -151,11 +230,11 @@ if (grid[x/(Tic.WIDTH/3)] [y/(Tic.LENGTH/3)]=='x' || grid[x/(Tic.WIDTH/3)][y/(Ti
 		}
 		
 		else if (currentState == P2) {
-			grid[x/(Tic.WIDTH/3)][y/(Tic.LENGTH/3)]='y';
+			Move(gridx, gridy, 'y');
 			currentState = P1;
 		}
 		
-		if(grid[x/(Tic.WIDTH/3)][y/(Tic.LENGTH/3)] == ' ') {
+		if(grid[gridx][gridy] == ' ') {
 			currentState = END;
 		}
 		
