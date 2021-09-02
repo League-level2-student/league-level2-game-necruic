@@ -19,6 +19,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 	final int P1 = 1;
 	final int P2 = 2;
 	final int END = 3;
+	char winner = ' ';
 	int currentState = MENU;
 	Font titlefont = new Font("Arial", Font.PLAIN, 48);
 	Font smolFont = new Font("Arial", Font.PLAIN, 24);
@@ -56,6 +57,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 				}
 		
 		if (currentState == 3){
+		
 		drawEndState(g);
 			}
 		
@@ -83,6 +85,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 	            if(i == n-1){
 	                //report win for s
 	            	System.out.println(s+"win");
+	            	winner=s;
+	            	currentState=END;
 	            }
 	        }
 
@@ -93,9 +97,12 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 	            if(i == n-1){
 	                //report win for s
 	            	System.out.println(s+"win");
+	            	winner=s;
+	            	currentState=END;
 	            }
+	            
 	        }
-
+	        
 	        //check diag
 	        if(x == y){
 	            //we're on a diagonal
@@ -105,6 +112,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 	                if(i == n-1){
 	                    //report win for s
 	                	System.out.println(s+"win");
+	                	winner=s;
+	                	currentState=END;
 	                }
 	            }
 	        }
@@ -117,14 +126,17 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 	                if(i == n-1){
 	                    //report win for s
 	                	System.out.println(s+"win");
+	                	winner=s;
+	                	currentState=END;
 	                }
 	            }
 	        }
 
 	        //check draw
 	        if(moveCount == (Math.pow(n, 2) - 1)){
+	        	winner=' ';
 	            //report draw
-	        	
+	        	currentState=END;
 	        	System.out.println("draw");
 	        }
 	    }
@@ -145,11 +157,20 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 		g.drawString("Press Enter to start", 125, 300);
 	}
 	public void drawEndState(Graphics g) {
+		
+
+		/*
+		if (winner=' '){
+				drawDrawState(g);
+		}
+		*/
 		g.setColor(Color.black);
 		g.setFont(titlefont);
-		g.drawString("won!", 100, 100);
-		g.drawString("Press Enter to play again", 125, 300);
-	}
+		g.drawString(winner+" won!", 100, 150);
+		g.setFont(smolFont);
+		g.drawString("Press Enter to play again", 55, 300);
+	
+}
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
@@ -216,27 +237,27 @@ public void updateMenuState() {
 		int x =arg0.getX();
 		int y=arg0.getY();
 
-		int gridx = x/Tic.WIDTH/3;
-		int gridy = y/Tic.LENGTH/3;
+		int gridx = x/(Tic.WIDTH/3);
+		int gridy = y/(Tic.LENGTH/3);
 if (grid[gridx] [gridy]=='x' || grid[gridx][gridy]=='y') {
 			return;
 		}
 		if(currentState == P1) {
+			currentState = P2;
 			Move(gridx, gridy, 'x');
-				currentState = P2;
+				
 				
 			
 			
 		}
 		
 		else if (currentState == P2) {
-			Move(gridx, gridy, 'y');
 			currentState = P1;
+			Move(gridx, gridy, 'y');
+			
 		}
 		
-		if(grid[gridx][gridy] == ' ') {
-			currentState = END;
-		}
+		
 		
 		System.out.println(x);
 		System.out.println(y);
@@ -262,6 +283,7 @@ if (grid[gridx] [gridy]=='x' || grid[gridx][gridy]=='y') {
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		repaint();
+		
 	}
 	
 	
