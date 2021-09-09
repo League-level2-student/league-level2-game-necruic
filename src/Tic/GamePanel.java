@@ -177,6 +177,13 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Act
 		if (arg0.getKeyCode()==KeyEvent.VK_ENTER) {
 		    if (currentState == 3) {
 		        currentState = 0;
+		        grid = new char[3][3];
+				framedraw.start();
+				for (int i = 0; i < grid.length; i++) {
+					for (int j = 0; j < grid[i].length; j++) {
+						grid[i][j]= ' ' ;
+					}
+				}
 	
 		    } 
 		    else if (currentState == 1 || currentState == 2) {
